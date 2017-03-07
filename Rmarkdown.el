@@ -9,16 +9,27 @@ b <- 20
 ```
 
 
-(defun select-r-cell ()
+(defun select-r-chunk ()
   (interactive)
-  (search-backward-regexp "```{[r].*}") 
+  (search-backward-regexp "```{[r].*}")
   (next-line)
   (set-mark-command nil)
   (search-forward-regexp "```")
   (previous-line)
-  (setq deactivate-mark nil)) 
+  (setq deactivate-mark nil))
 
-(global-set-key (kbd "C-c C-d") 'select-r-cell)
+
+(defun rmd-point-in-chunk ()
+  "Check if the current point is in an R code chunk"
+  (interactive)
+  (save-excursion
+    (let ((cur (point)))
+      (and
+       (< (search-backward-regexp "```{[r].*}") cur)
+       (> (search-forward-regexp "```\n") cur)))))
+
+
+(global-set-key (kbd "C-c C-d") (lambda () (interactive) (print (rmd-point-in-chunk))))
 
 
 ```{r test2}

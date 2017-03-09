@@ -6,17 +6,19 @@
 a <- 10
 b <- 20
 
+
 ```
 
 
-(defun select-r-chunk ()
+(defun rmd-select-r-chunk ()
   (interactive)
-  (search-backward-regexp "```{[r].*}")
-  (next-line)
-  (set-mark-command nil)
-  (search-forward-regexp "```")
-  (previous-line)
-  (setq deactivate-mark nil))
+  (progn
+    (search-backward-regexp "```{[r].*}")
+    (next-line)
+    (set-mark-command nil)
+    (search-forward-regexp "```")
+    (beginning-of-line)
+    (setq deactivate-mark nil)))
 
 
 (defun rmd-point-in-chunk ()
@@ -30,6 +32,7 @@ b <- 20
 
 
 (global-set-key (kbd "C-c C-d") (lambda () (interactive) (print (rmd-point-in-chunk))))
+(global-set-key (kbd "C-c C-v") (lambda () (interactive) (print (rmd-select-r-chunk))))
 
 
 ```{r test2}

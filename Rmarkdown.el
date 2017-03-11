@@ -1,3 +1,8 @@
+;;
+;; Set of functions to work with R chunk in R markdown files
+;;
+
+
 ;; helper functions
 (defun rmd-search-backward-r-chunk (count)
   "Helper function to move cursor to beginning of previous R chunk"
@@ -5,16 +10,16 @@
       (next-line)
     (message "No more R chunks")))
 
-
-;; checking 
 (defun rmd-point-in-chunk ()
   "Check if the current point is in an R code chunk"
   (interactive)
   (save-excursion
     (let ((cur (point)))
       (and
-       (< (search-backward-regexp "```{[r].*}") cur)
+       (< (let ((res (search-backward-regexp "```{[r].*}" nil t 1)))  ;; if there is nothing to find backward, return buffer-size so first position check fails
+            (if res res (buffer-size))) cur)
        (> (search-forward-regexp "```\n") cur)))))
+
 
 
 ;; movement
@@ -31,6 +36,23 @@
   (if (rmd-point-in-chunk)
       (rmd-search-backward-r-chunk 2)
     (rmd-search-backward-r-chunk 1)))
+
+(defun rmd-goto-beginning-of-r-chunk ()
+  "If currently in an R chunk, move cursor to the first line"
+  (interactive)
+  (if (rmd-point-in-chunk)
+      (rmd-search-backward-r-chunk 1)
+    (message "Not in R chunk")))
+
+(defun rmd-goto-end-of-r-chunk ()
+  "If currently in an R chunk, move cursor to the first line"
+  (interactive)
+  (if (rmd-point-in-chunk)
+      (progn
+        (search-forward-regexp "```\n")
+        (previous-line))
+    (message "Not in R chunk")))
+
 
 
 ;; selection

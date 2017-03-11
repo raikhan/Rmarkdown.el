@@ -1,16 +1,5 @@
-
-(message "hello world")
-
-```{r test}
-
-a <- 10
-b <- 20
-
-
-```
-
-
 (defun rmd-select-r-chunk ()
+  "Select all text in an R chunk"
   (interactive)
   (progn
     (search-backward-regexp "```{[r].*}")
@@ -31,11 +20,6 @@ b <- 20
        (> (search-forward-regexp "```\n") cur)))))
 
 
-(global-set-key (kbd "C-c C-d") (lambda () (interactive) (print (rmd-point-in-chunk))))
-(global-set-key (kbd "C-c C-v") (lambda () (interactive) (print (rmd-select-r-chunk))))
+(global-set-key (kbd "C-c d") (lambda () (interactive) (print (rmd-point-in-chunk))))
+(global-set-key (kbd "C-c v") (lambda () (interactive) (print (rmd-select-r-chunk))))
 
-
-```{r test2}
-
-
-```

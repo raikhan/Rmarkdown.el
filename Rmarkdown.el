@@ -69,7 +69,17 @@
     (message "Not in R chunk")))
 
 
+
+;; Evaluation
+(defun rmd-evaluate-r-chunk ()
+  "Select and evaluate all the code in the current R chunk"
+  (interactive)
+  (save-excursion
+    (rmd-select-r-chunk)
+    (ess-eval-region (region-beginning) (region-end) nil)))
+
+
 ;; demo keybindings
-(global-set-key (kbd "C-c d") (lambda () (interactive) (print (rmd-point-in-chunk))))
-(global-set-key (kbd "C-c v") (lambda () (interactive) (print (rmd-select-r-chunk))))
+(global-set-key (kbd "C-c d") 'rmd-select-r-chunk)
+(global-set-key (kbd "C-c v") 'rmd-evaluate-r-chunk)
 
